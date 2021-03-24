@@ -1,0 +1,49 @@
+# Default values for bender.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/valentinlevitov/bender
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+application:
+  # Comma-separated emails of maintainers
+  maintainers: ""
+  # Comma-separated emails of supervisors
+  supervisors: ""
+  # Email subject prefix for all notifications
+  subjectPrefix: "[Jira Notification] "
+
+jira:
+  # Jira root adddress. Required parameter. For example: https://jira.your-organization.com
+  rootUri: null
+  # Jira user and password (basic authentification)
+  userName: ""
+  password: ""
+  # Maximum issue count returned by JQL
+  maxResults: 300
+
+smtp:
+  # SMTP host and port used for sending emails, required
+  host: null
+  port: null
+  # SMTP service user and password
+  userName: ""
+  password: ""
+  # Address from which the messages are sent
+  from: ""
+  # Whether SSL should be enabled 
+  enableSsl: true

@@ -1,0 +1,36 @@
+<configuration>
+    <jqlRule group="notify-all">
+        <jql><![CDATA[ DueDate < startOfDay() AND Resolution is EMPTY ]]></jql>
+        <notify 
+            mailTo="assignee"
+            cc="reporter"
+            subject="DueDate of the issue is expired"
+            recommendations="Please resolve or reschedule the issue"
+            />
+    </jqlRule>
+
+    <jqlRule group="auto-processing">
+        <jql><![CDATA[ 
+            Type = "Support"
+            AND Assignee is Not Empty
+            AND (Not Assignee Changed by membersOf("Support-Administrators"))
+            AND Resolution is Empty
+            ]]>
+        </jql>
+        <callRest
+            verb="PUT"
+            urlPattern="{{@jiraRoot}}rest/api/2/issue/{{@issueKey}}">
+
+            <body><![CDATA[
+                    {
+                        "update": {
+                            "assignee": [{"set": {"name": null}}],
+                            "comment": [{"add": {"body": "Dropping Assignee. Only members of Support-Administrators team may assign Support issues"}}]
+                        }
+                    }
+                ]]>
+            </body>
+        </callRest>
+     </jqlRule>
+
+</configuration>

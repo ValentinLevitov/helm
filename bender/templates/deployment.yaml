@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bender.fullname" . }}
+  labels:
+    {{- include "bender.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "bender.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        {{- include "bender.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "bender.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: config-vol
+            mountPath: "/app/rules.xml"
+            subPath: rules.xml
+          - name: config-vol
+            mountPath: "/app/appsettings.json"
+            subPath: appsettings.json
+          - name: config-vol
+            mountPath: "/app/bender-cron"
+            subPath: crontab
+          - name: config-vol
+            mountPath: "/app/secrets/appsettings.secrets.json"
+            subPath: appsettings.secrets.json
+      volumes:
+      - name: config-vol
+        projected:
+          sources:
+          - configMap:
+              name: bender-config
+          - secret:
+              name: bender-secret
+

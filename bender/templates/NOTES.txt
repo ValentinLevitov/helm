@@ -1,0 +1,9 @@
+Bender's schedule:
+----
+{{ .Files.Get "files/crontab" }}
+----
+
+With rules.xml applied:
+----
+{{ .Files.Get "files/rules.xml" }}
+----

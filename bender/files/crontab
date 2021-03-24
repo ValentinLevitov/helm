@@ -1,0 +1,2 @@
+0 9-20 * * MON-FRI bender notify-all
+*/10 9-20 * * MON-FRI bender auto-processing
