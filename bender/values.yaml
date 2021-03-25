@@ -19,6 +19,10 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+logging:
+  # Applicaton logging level. Possible values are: Verbose, Debug, Information, Warning, Error, Fatal
+  level: "Error"
+
 application:
   # Comma-separated emails of maintainers
   maintainers: ""
