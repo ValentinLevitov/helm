@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/valentinlevitov/bender
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "1.0"
 
 serviceAccount:
   # Specifies whether a service account should be created
